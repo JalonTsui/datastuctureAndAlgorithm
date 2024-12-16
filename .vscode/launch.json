@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "index",
             "program": "${workspaceFolder}/src/algorithm/index.ts",
-            "preLaunchTask": "tsc: build - tsconfig.json",
+            "preLaunchTask": "tsc: build - tsconfig.normal.json",
             "outFiles": [
                 "${workspaceFolder}/output/**/*.js"
             ]
