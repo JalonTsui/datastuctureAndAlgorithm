@@ -18,31 +18,40 @@ export class BinarySearchTree<T = any> {
     this.compareFn = compareFn;
   }
 
-  insert(key: T) {
+  insert(value: T) {
     if (this.root === null) {
-      this.root = new Node(key);
+      this.root = new Node(value);
     }
     else {
-      this.insertNode(this.root, key);
+      this.insertNode(this.root, value);
     }
   }
 
-  insertNode(node: Node<T>, key: T) {
-    if (this.compareFn(node.key, key) === COMPARE_FLAG.GREATER_THEN) {
+  insertNode(node: Node<T>, value: T) {
+    if (this.compareFn(node.value, value) === COMPARE_FLAG.GREATER_THEN) {
       if (node.left === null) {
-        node.left = new Node(key);
+        node.left = new Node(value);
       }
       else {
-        this.insertNode(node.left, key);
+        this.insertNode(node.left, value);
       }
     }
     else {
       if (node.right === null) {
-        node.right = new Node(key);
+        node.right = new Node(value);
       }
       else {
-        this.insertNode(node.right, key);
+        this.insertNode(node.right, value);
       }
+    }
+  }
+
+  // 中序遍历
+  inOrderTraverse(node: Node<T> | null, cb: (node: Node<T>) => any) {
+    if (node !== null) {
+      this.inOrderTraverse(node.left, cb);
+      cb(node);
+      this.inOrderTraverse(node.right, cb);
     }
   }
 }

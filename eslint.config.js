@@ -1,9 +1,9 @@
-const globals = require("globals");
-const tseslint = require("typescript-eslint");
-const stylistic = require("@stylistic/eslint-plugin");
+import globals from "globals";
+import tseslint from "typescript-eslint";
+import stylistic from "@stylistic/eslint-plugin";
 
 /** @type {import('eslint').Linter.Config[]} */
-module.exports = [
+export default [
   { files: ["src/**/*.{js,mjs,cjs,ts}"] },
   {
     name: "app/files-to-ignore",
