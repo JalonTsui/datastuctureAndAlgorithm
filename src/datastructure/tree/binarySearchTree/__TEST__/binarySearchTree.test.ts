@@ -14,7 +14,7 @@ describe('binary search tree test', () => {
 
   test('binary seach tree create', () => {
     console.log(bst);
-    expect(bst.root!.value).toBe(11);
+    expect(bst.root!.value).toBe(3);
   });
 
   test('inOrderTraserve', () => {
