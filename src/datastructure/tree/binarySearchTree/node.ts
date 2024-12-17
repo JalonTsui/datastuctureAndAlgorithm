@@ -1,7 +1,7 @@
 export class Node<T = any> {
   value: T;
-  left: Node | null;
-  right: Node | null;
+  left: Node<T> | null;
+  right: Node<T> | null;
 
   constructor(value: T) {
     this.value = value; // 节点的值
