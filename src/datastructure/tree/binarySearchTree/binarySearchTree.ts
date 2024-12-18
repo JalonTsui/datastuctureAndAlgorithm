@@ -10,6 +10,8 @@ export interface ComapreFn<T> {
   (n1: T, n2: T): -1 | 1 | 0;
 }
 
+interface RemoveV2ReturnType<T> { root: Node<T> | null;removeValue: T | null }
+
 export class BinarySearchTree<T = any> {
   root: Node<T> | null;
   compareFn: ComapreFn<T>;
@@ -118,9 +120,13 @@ export class BinarySearchTree<T = any> {
     }
   }
 
-  remove(value: T): Node<T> | null {
+  remove(value: T): T | null {
     if (this.root === null) return null;
-    return this.removeNode(this.root, value, null, 'left');
+    return this._removeNode(this.root, value, null, 'left')?.value;
+  }
+
+  removeV2(value: T): RemoveV2ReturnType<T> {
+    return this._removeV2(this.root, value);
   }
 
   /**
@@ -131,15 +137,15 @@ export class BinarySearchTree<T = any> {
    * @param nodeFlag 当前节点在前一个节点的左边还是右边
    * @returns
    */
-  removeNode(currentNode: Node<T> | null, value: T, preNode: Node<T> | null, nodeFlag: 'left' | 'right') {
+  _removeNode(currentNode: Node<T> | null, value: T, preNode: Node<T> | null, nodeFlag: 'left' | 'right') {
     if (currentNode === null) {
       return null;
     }
     if (this.compareFn(currentNode.value, value) === COMPARE_FLAG.LESS_HTEN) {
-      return this.removeNode(currentNode.right, value, currentNode, 'right');
+      return this._removeNode(currentNode.right, value, currentNode, 'right');
     }
     else if (this.compareFn(currentNode.value, value) === COMPARE_FLAG.GREATER_THEN) {
-      return this.removeNode(currentNode.left, value, currentNode, 'left');
+      return this._removeNode(currentNode.left, value, currentNode, 'left');
     }
     else {
       const returnNode = { ...currentNode };
@@ -159,7 +165,7 @@ export class BinarySearchTree<T = any> {
       // 删除节点的左右都有子节点
       if (currentNode.left !== null && currentNode.right !== null) {
         const rightMinNode = this.getMinNode(currentNode.right);
-        this.removeNode(currentNode, rightMinNode.value, preNode, 'right');
+        this._removeNode(currentNode, rightMinNode.value, preNode, 'right');
         currentNode.value = rightMinNode.value;
         return returnNode;
       }
@@ -167,16 +173,64 @@ export class BinarySearchTree<T = any> {
       // 删除节点的任意一边有子节点
       if (currentNode.left === null) {
         const rightMinNode = this.getMinNode(currentNode.right!);
-        this.removeNode(currentNode, rightMinNode.value, preNode, 'right');
+        this._removeNode(currentNode, rightMinNode.value, preNode, 'right');
         currentNode.value = rightMinNode.value;
         return returnNode;
       }
       else {
         const leftMaxNode = this.getMaxNode(currentNode.left!);
-        this.removeNode(currentNode, leftMaxNode.value, preNode, 'left');
+        this._removeNode(currentNode, leftMaxNode.value, preNode, 'left');
         currentNode.value = leftMaxNode.value;
         return returnNode;
       }
+    }
+  }
+
+  /**
+   * 递归删除节点，第二种实现
+   * @param node 被删除树(子树)的根节点
+   * @param value 要删除的值
+   * @returns root：表示更新后被删除树的根节点，removeValue：删除的值
+   */
+  _removeV2(node: Node<T> | null, value: T): RemoveV2ReturnType<T> {
+    const returnValue: RemoveV2ReturnType<T> = {
+      root: node,
+      removeValue: null,
+    };
+    if (node === null) return returnValue;
+    if (this.compareFn(node.value, value) === COMPARE_FLAG.LESS_HTEN) {
+      const result = this._removeV2(node.right, value);
+      node.right = result.root;
+      returnValue.removeValue = result.removeValue;
+      return returnValue;
+    }
+    else if (this.compareFn(node.value, value) === COMPARE_FLAG.GREATER_THEN) {
+      const result = this._removeV2(node.left, value);
+      node.left = result.root;
+      returnValue.removeValue = result.removeValue;
+      return returnValue;
+    }
+    else {
+      returnValue.removeValue = node.value;
+      if (node.left === null && node.right === null) {
+        returnValue.root = null;
+        return returnValue;
+      }
+      if (node.left === null) {
+        returnValue.root = node.right;
+        return returnValue;
+      }
+      else if (node.right === null) {
+        returnValue.root = node.left;
+        return returnValue;
+      }
+
+      // 这里没有给returnValue.root赋值是因为，直接把node的值替换为后继节点的值，相当于删除了当前节点
+      const rightMinNode = this.getMaxNode(node.right);
+      node.value = rightMinNode.value;
+      const result = this._removeV2(node.right, rightMinNode.value);
+      node.right = result.root;
+      return returnValue;
     }
   }
 }

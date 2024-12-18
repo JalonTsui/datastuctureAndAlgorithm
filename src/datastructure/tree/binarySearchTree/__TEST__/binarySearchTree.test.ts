@@ -56,4 +56,25 @@ describe('binary search tree test', () => {
     });
     console.log(list);
   });
+
+  test('removeV2', () => {
+    const list: number[] = [];
+    bst.removeV2(0);
+    bst.removeV2(6);
+    expect(bst.find(6)).toBeNull();
+
+    bst.removeV2(5);
+    expect(bst.find(5)).toBeNull();
+
+    bst.removeV2(10);
+    expect(bst.find(10)).toBeNull();
+
+    bst.removeV2(15);
+    expect(bst.find(15)).toBeNull();
+
+    bst.inOrderTraverse(bst.root, (node) => {
+      list.push(node.value);
+    });
+    console.log(list);
+  });
 });
