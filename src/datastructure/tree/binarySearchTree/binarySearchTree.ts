@@ -226,6 +226,7 @@ export class BinarySearchTree<T = any> {
       }
 
       // 这里没有给returnValue.root赋值是因为，直接把node的值替换为后继节点的值，相当于删除了当前节点
+      // todo: 可以优化，在找后继节点的过程中，必定经过其父节点，拿到其父节点将链接值赋值为null即可
       const rightMinNode = this.getMaxNode(node.right);
       node.value = rightMinNode.value;
       const result = this._removeV2(node.right, rightMinNode.value);
