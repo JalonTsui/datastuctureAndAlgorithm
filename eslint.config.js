@@ -1,4 +1,3 @@
-import globals from "globals";
 import tseslint from "typescript-eslint";
 import stylistic from "@stylistic/eslint-plugin";
 
@@ -6,10 +5,9 @@ import stylistic from "@stylistic/eslint-plugin";
 export default [
   { files: ["src/**/*.{js,mjs,cjs,ts}"] },
   {
-    name: "app/files-to-ignore",
-    ignores: ["**/dist/**", "**/dist-ssr/**", "**/coverage/**", "eslint.config.js"],
+    name: "files-to-ignore",
+    ignores: ["eslint.config.js", "**/output/**"],
   },
-  { languageOptions: { globals: globals.browser } },
   ...tseslint.configs.recommended,
   stylistic.configs.customize({
     semi: true,
