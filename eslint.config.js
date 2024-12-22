@@ -14,7 +14,7 @@ export default [
   }),
   {
     rules: {
-      indent: ["error", 2], // 2 表示使用 2 个空格
+      // indent: ["error", 2], // 2 表示使用 2 个空格
       "@typescript-eslint/no-explicit-any": 1,
       "@typescript-eslint/no-empty-object-type": 1, // 自定义接口不能为空
     }

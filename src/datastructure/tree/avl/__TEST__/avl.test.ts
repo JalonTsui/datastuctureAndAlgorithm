@@ -16,4 +16,8 @@ describe('avl test', () => {
     expect(treeHeight).toBe(4);
     console.log(treeHeight);
   });
+
+  test('aaa', () => {
+
+  });
 });
