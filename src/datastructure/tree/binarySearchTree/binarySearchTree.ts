@@ -1,4 +1,4 @@
-import { Node } from './node';
+import { Node } from '@tree/common/node';
 
 export const COMPARE_FLAG = {
   LESS_HTEN: -1,

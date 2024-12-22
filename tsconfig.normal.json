@@ -38,6 +38,9 @@
         "paths": {
             "@/*": [
                 "src/*"
+            ],
+            "@tree/*": [
+                "src/datastructure/tree/*"
             ]
         }
     },
