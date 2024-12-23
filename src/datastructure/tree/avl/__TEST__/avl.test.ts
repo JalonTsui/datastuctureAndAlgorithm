@@ -1,6 +1,7 @@
-import { AVL } from '../avl';
+import { AVL, BalanceFactor } from '../avl';
 
 let avl: AVL<number>;
+const balancedList = [BalanceFactor.BALANCED, BalanceFactor.SLIGHTLY_UNBALANCED_LEFT, BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT];
 
 describe('avl test', () => {
   beforeAll(() => {
@@ -11,10 +12,11 @@ describe('avl test', () => {
     }
   });
 
-  test('getNodeHeight test', () => {
-    const treeHeight = avl.getNodeHight(avl.root);
-    expect(treeHeight).toBe(4);
-    console.log(treeHeight);
+  test('balance factor test', () => {
+    avl.inOrderTraverse(avl.root, (node) => {
+      const balanceFactor = avl.getBalanceFactor(node);
+      expect(balancedList).toContain(balanceFactor);
+    });
   });
 
   test('aaa', () => {
