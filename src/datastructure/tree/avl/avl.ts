@@ -1,6 +1,6 @@
 import type { CompareFn } from '@/utils/compareUtils';
 import type { TEmpty } from '@/types';
-import { BinarySearchTree, COMPARE_FLAG } from '@tree/binarySearchTree';
+import { BinarySearchTree, COMPARE_FLAG, RemoveV2ReturnType } from '@tree/binarySearchTree';
 import { defaultCompare } from '@/utils/compareUtils';
 import { Node } from '@tree/common/node';
 
@@ -78,10 +78,22 @@ export class AVL<T = number> extends BinarySearchTree<T> {
     return this.rotationRR(node);
   }
 
+  /**
+   *
+   * @override
+   * @param value
+   */
   insert(value: T) {
     this.root = this.insertNode(this.root, value);
   }
 
+  /**
+   *
+   * @override
+   * @param node
+   * @param value
+   * @returns
+   */
   insertNode(node: Node<T> | null, value: T): Node<T> {
     if (node === null) {
       return new Node(value);
@@ -110,5 +122,51 @@ export class AVL<T = number> extends BinarySearchTree<T> {
       }
     }
     return node;
+  }
+
+  /**
+   *
+   * @override
+   * @param node
+   * @param value
+   * @returns
+   */
+  _removeV2(node: Node<T> | null, value: T): RemoveV2ReturnType<T> {
+    const result = super._removeV2(node, value);
+    if (result.root === null) {
+      return result;
+    }
+    const balanceFactor = this.getBalanceFactor(result.root);
+    if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+      const balanceFactorLeft = this.getBalanceFactor(result.root.left);
+      if (balanceFactorLeft === BalanceFactor.BALANCED || balanceFactor === BalanceFactor.SLIGHTLY_UNBALANCED_LEFT) {
+        return {
+          root: this.rotationLL(result.root),
+          removeValue: result.removeValue,
+        };
+      }
+      if (balanceFactorLeft === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT) {
+        return {
+          root: this.rotationLR(result.root),
+          removeValue: result.removeValue,
+        };
+      }
+    }
+    if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+      const balanceFactorRight = this.getBalanceFactor(result.root.left);
+      if (balanceFactor === BalanceFactor.SLIGHTLY_UNBALANCED_LEFT) {
+        return {
+          root: this.rotationRL(result.root),
+          removeValue: result.removeValue,
+        };
+      }
+      if (balanceFactorRight === BalanceFactor.BALANCED || balanceFactorRight === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT) {
+        return {
+          root: this.rotationRR(result.root),
+          removeValue: result.removeValue,
+        };
+      }
+    }
+    return result;
   }
 }

@@ -10,7 +10,7 @@ export interface ComapreFn<T> {
   (n1: T, n2: T): -1 | 1 | 0;
 }
 
-interface RemoveV2ReturnType<T> { root: Node<T> | null;removeValue: T | null }
+export interface RemoveV2ReturnType<T> { root: Node<T> | null;removeValue: T | null }
 
 export class BinarySearchTree<T = any> {
   root: Node<T> | null;
