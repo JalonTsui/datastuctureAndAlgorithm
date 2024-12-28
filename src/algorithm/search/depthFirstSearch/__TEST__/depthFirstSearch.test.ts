@@ -1,8 +1,8 @@
 import { Graph, Vertex } from '@data/graph/graph';
-import { breadthFirstSearch as bfs } from '../breadthFirstSearch';
+import { depthFirstSearch as dfs } from '../depthFirstSearch';
 
-describe('bfs test', () => {
-  test('bse test 01', () => {
+describe('dfs test', () => {
+  test('dfs test 01', () => {
     const graph = new Graph();
     const a = new Vertex('A');
     const b = new Vertex('B');
@@ -28,28 +28,8 @@ describe('bfs test', () => {
     graph.addEdge(d, g);
     graph.addEdge(d, h);
 
-    const { distances, predecessors } = bfs(graph, a, (v) => {
+    dfs(graph, a, (v) => {
       console.log(v.toString());
     });
-
-    console.log(distances);
-    console.log(predecessors);
-
-    // 展示路径
-    const fromVertex = a;
-    for (let i = 1; i < list.length; i++) {
-      const toVertex = list[i];
-      const path: Vertex<string>[] = []; // stack
-      for (let v = toVertex; v !== fromVertex; v = predecessors!.get(v)!) {
-        path.push(v);
-      }
-      path.push(fromVertex);
-      const vertex = path.pop()!;
-      let str = vertex.value;
-      while (path.length > 0) {
-        str += ' -> ' + path.pop()?.value;
-      }
-      console.log(str);
-    }
   });
 });
