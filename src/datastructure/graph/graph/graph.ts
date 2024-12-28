@@ -1,22 +1,22 @@
-import { Vertex } from './node';
+import { Vertex } from './vertex';
 
-export class Graph {
+export class Graph<T = string> {
   isDirected: boolean;
-  vertices: Set<Vertex> = new Set(); // 节点
-  adjList: Map<Vertex, Set<Vertex>> = new Map(); // 节点的连接表
+  vertices: Set<Vertex<T>> = new Set(); // 节点
+  adjList: Map<Vertex<T>, Set<Vertex<T>>> = new Map(); // 节点的连接表
 
   constructor(isDirected: boolean = false) {
     this.isDirected = isDirected;
   }
 
-  addVertex(node: Vertex) {
+  addVertex(node: Vertex<T>) {
     if (!this.vertices.has(node)) {
       this.vertices.add(node);
       this.adjList.set(node, new Set());
     }
   }
 
-  addEdge(n1: Vertex, n2: Vertex) {
+  addEdge(n1: Vertex<T>, n2: Vertex<T>) {
     if (!this.adjList.get(n1)) {
       this.addVertex(n1);
     }
@@ -29,11 +29,11 @@ export class Graph {
     }
   }
 
-  getVertices() {
+  getVertices(): Set<Vertex<T>> {
     return this.vertices;
   }
 
-  getAdjList() {
+  getAdjList(): Map<Vertex<T>, Set<Vertex<T>>> {
     return this.adjList;
   }
 

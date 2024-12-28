@@ -41,6 +41,12 @@
             ],
             "@tree/*": [
                 "src/datastructure/tree/*"
+            ],
+            "@data/*": [
+                "src/datastructure/*"
+            ],
+            "@algorithm/*": [
+                "src/algorithm/*"
             ]
         }
     },

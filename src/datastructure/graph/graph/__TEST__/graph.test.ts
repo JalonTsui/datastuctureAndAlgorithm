@@ -1,5 +1,5 @@
 import { Graph } from '../graph';
-import { Vertex } from '../node';
+import { Vertex } from '../vertex';
 
 describe('graph test', () => {
   test('graph test 01', () => {
