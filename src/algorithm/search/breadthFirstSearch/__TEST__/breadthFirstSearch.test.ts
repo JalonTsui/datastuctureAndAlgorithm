@@ -13,7 +13,9 @@ describe('bst test', () => {
     const g = new Vertex('G');
     const h = new Vertex('H');
     const i = new Vertex('I');
+
     const list = [a, b, c, d, e, f, g, h, i];
+
     list.forEach(v => graph.addVertex(v));
     graph.addEdge(a, b);
     graph.addEdge(a, c);
@@ -26,8 +28,28 @@ describe('bst test', () => {
     graph.addEdge(d, g);
     graph.addEdge(d, h);
 
-    bst(graph, a, (v) => {
+    const { distances, predecessors } = bst(graph, a, (v) => {
       console.log(v.toString());
     });
+
+    console.log(distances);
+    console.log(predecessors);
+
+    // 展示路径
+    const fromVertex = a;
+    for (let i = 1; i < list.length; i++) {
+      const toVertex = list[i];
+      const path: Vertex<string>[] = []; // stack
+      for (let v = toVertex; v !== fromVertex; v = predecessors!.get(v)!) {
+        path.push(v);
+      }
+      path.push(fromVertex);
+      const vertex = path.pop()!;
+      let str = vertex.value;
+      while (path.length > 0) {
+        str += ' -> ' + path.pop()?.value;
+      }
+      console.log(str);
+    }
   });
 });

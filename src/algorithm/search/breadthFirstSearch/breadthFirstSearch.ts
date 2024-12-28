@@ -17,15 +17,30 @@ export const initializeColor = <T>(vertices: Set<T> | T[]): Map<T, Colors> => {
   return color;
 };
 
+export const initializeDistances = <T>(vertices: Set<T> | T[]): Map<T, number> => {
+  const distances: Map<T, number> = new Map();
+  vertices.forEach((vertex: T) => distances.set(vertex, 0));
+  return distances;
+};
+
+export const initializePrecessor = <T>(vertices: Set<T> | T[]): Map<T, T | null> => {
+  const precessor: Map<T, T | null> = new Map();
+  vertices.forEach((vertex: T) => precessor.set(vertex, null));
+  return precessor;
+};
+
 export const breadthFirstSearch = <T = string>(graph: Graph<T>, startVertex: Vertex<T>, cb: (v: Vertex<T>) => any) => {
   const vertices = graph.getVertices();
   const adjList = graph.getAdjList();
 
   if (!adjList.has(startVertex)) {
-    return;
+    return {};
   }
 
   const color = initializeColor(vertices);
+  const distances = initializeDistances(vertices); // startVertex节点到指定节点的边数
+  const predecessors = initializePrecessor(vertices); // 记录某个节点的前一个节点
+
   const queue: Vertex<T>[] = [];
   queue.push(startVertex);
 
@@ -36,6 +51,8 @@ export const breadthFirstSearch = <T = string>(graph: Graph<T>, startVertex: Ver
     for (const w of neighbors.values()) {
       if (color.get(w) === Colors.WHITE) {
         color.set(w, Colors.GREY);
+        predecessors.set(w, u);
+        distances.set(w, distances.get(u)! + 1);
         queue.push(w);
       }
     }
@@ -44,4 +61,9 @@ export const breadthFirstSearch = <T = string>(graph: Graph<T>, startVertex: Ver
       cb(u);
     }
   }
+
+  return {
+    distances,
+    predecessors,
+  };
 };
