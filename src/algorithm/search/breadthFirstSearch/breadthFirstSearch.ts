@@ -1,5 +1,7 @@
 /**
  * 广度优先算法 BST(breadth first search)
+ *
+ * 应用：计算某个点到其他每个点的最短距离
  */
 
 import { Graph, Vertex } from '@data/graph/graph';
